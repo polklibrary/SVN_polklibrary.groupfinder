@@ -1,0 +1,43 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="polklibrary.groupfinder">
+
+        
+  <browser:page
+      for="polklibrary.groupfinder.models.groupfinder.IGroupFinder"
+      name="google_api"
+      class=".google_api.GoogleAPI"
+      permission="zope2.View"
+      />
+      
+  <browser:page
+      for="polklibrary.groupfinder.models.groupfinder.IGroupFinder"
+      name="groupfinder_view"
+      class=".groupfinder.GroupFinder"
+      permission="zope2.View"
+      />
+    
+  <browser:page
+      for="polklibrary.groupfinder.models.location.ILocation"
+      name="location_view"
+      class=".location.Location"
+      permission="zope2.View"
+      />
+    
+    
+  <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
+  <include package="z3c.jbot" file="meta.zcml" />
+  <browser:jbot
+      directory="overrides"
+      layer="polklibrary.groupfinder.interfaces.IPolklibraryGroupfinderLayer"
+      />
+
+  <!-- Publish static files -->
+  <browser:resourceDirectory
+      name="polklibrary.groupfinder"
+      directory="static"
+      />
+
+</configure>

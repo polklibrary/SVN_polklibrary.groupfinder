@@ -1,0 +1,145 @@
+#groupfinder {
+    margin-bottom: 50px;
+}
+
+.gf-backdrop {
+    background-color: #999;
+    bottom: 0;
+    display: none;
+    left: 0;
+    opacity: 0.7;
+    right: 0;
+    top: 0;
+    z-index: 10;
+}
+#gf-loaddrop {
+    background-image: url('++resource++polklibrary.groupfinder/loading.gif');
+    background-repeat: no-repeat;
+    background-size: 10%;
+    position: absolute;
+    display: block;
+    height: 5000px;
+}
+
+#gf-backdrop {
+    position: fixed;
+}
+
+
+#gf-pickadate-label { font-weight: bold; }
+#groupfinder .pattern-pickadate-date-wrapper > input {
+    font-weight: bold;
+    padding: 10px !important;
+}
+
+#gf-locations {
+    margin-bottom: 10px;
+}
+#gf-locations a{
+    color: #333;
+    font-style: italic;
+}
+
+
+
+#gf-events {
+    border: 1px solid #bbb;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+#gf-events > div .gf-timeslot {
+    background-color: #eeeeee;
+    border: 1px solid #ddd;
+    border-bottom: 0 none;
+    cursor: pointer;
+    padding: 10px;
+    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;  
+    -khtml-user-select: none;    
+    -moz-user-select: none;      
+    -ms-user-select: none;       
+    user-select: none;           
+}
+#gf-events > div .gf-timeslot:hover, #gf-events > div .gf-timeslot.highlighted {
+    background-color: #81F781;
+}
+#gf-events > div .gf-event {
+    background-color: pink !important;
+    border-bottom-color: pink;
+    border-top-color: pink;
+}
+#gf-events .pat-text-shorty {
+    color: black;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 0.9em;
+    margin-left: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+/* ADD OVERLAY ================================================================*/
+
+#gf-add-overlay {
+    background-color: #eee;
+    box-shadow: 0 0 10px 4px #000;
+    display: none;
+    left: 50%;
+    margin-left: -200px;
+    padding: 15px;
+    position: absolute;
+    width: 400px;
+    top: 100px;
+    z-index: 10000;
+}
+#gf-add-overlay  h2 {
+    margin: 0;
+}
+#gf-add-overlay > label {
+    display: block;
+    margin-top: 10px;
+}
+#gf-add-overlay > label[for="gf-privacy"] { display: inline-block; }
+#gf-add-overlay #gf-privacy { vertical-align: middle; }
+
+#gf-add-overlay > .gf-buttons {
+    margin-top: 10px;
+}
+#gf-add-overlay  option[disabled]{
+    background-color: #ddd;
+}
+#gf-add-overlay  option[disabled]:after{
+    content: ' (taken)';
+    font-style: italic;
+}
+#gf-add-overlay  #gf-title-toggle {
+    margin-top: 10px;
+    display: none;
+}
+
+#gf-add-overlay #gf-location {
+    background-color: #ddd;
+    margin-top: 20px;
+    padding: 10px;
+}
+#gf-add-overlay #gf-location img {
+    height: auto;
+    width: 100%;
+}
+
+
+
+#gf-timeline {
+    background-color: rgba(228, 112, 112, 0.8);
+    height: 2px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+
