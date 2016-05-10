@@ -143,3 +143,13 @@
     z-index: 1;
 }
 
+#gf-submit.invalid-fields{
+    background-color: #ccc;
+}
+
+.invalid-field {
+    border: 1px solid red !important;
+    background-color: pink !important;
+}
+
+

@@ -4,7 +4,6 @@ var SafeFilter = {
 
     BANNED_PHRASES : [' ass ',' fuck','fuck ','bitch',' shit','shit ','asshole','cocksucker',' cock','http'],
 
-
     init : function() {
         $('.pat-safefilter').keydown(function(){
             var text = $(this).text();

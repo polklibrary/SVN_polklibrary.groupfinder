@@ -1,12 +1,8 @@
 from apiclient import discovery
 from httplib2 import Http
 from plone import api
-from plone.registry.interfaces import IRegistry
 from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
 from oauth2client.service_account import ServiceAccountCredentials
-from zope.component import getUtility
 
 import datetime,json,urllib
 

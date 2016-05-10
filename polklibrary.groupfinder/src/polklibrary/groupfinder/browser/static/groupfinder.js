@@ -42,6 +42,7 @@ var GroupFinder = {
     init : function() {
         var self = this;
         self.setup_addevent_handlers();
+        self.validate_emails();
         $(document).on('input propertychange change', '#content-core input.pattern-pickadate-date' , function(){
             self.clear();
             self.build();
@@ -374,8 +375,10 @@ var GroupFinder = {
         
         // Submit Control
         $('#gf-submit').click(function(){
-            self.add_event_handler();
-            self.hide_addevent_overlay();
+            if (!$(this).hasClass('invalid-fields')) {
+                self.add_event_handler();
+                self.hide_addevent_overlay();
+            }
         });
         
         // Cancel Control
@@ -410,7 +413,28 @@ var GroupFinder = {
         var target = this.row_height * (now.getHours() * 4) + ((now.getMinutes()/15) * this.row_height);
         $('#gf-timeline').css('top', target + 'px');
         $('#gf-loaddrop').css('background-position', 'center ' + (target-50) + 'px');
-    }
+    },
+    
+    
+    validate_emails : function() {
+    
+        var regex = /^([a-zA-Z0-9_.+-])+\@uwosh.edu$/;
+        
+        $('#gf-email').change(function(){
+            var email = $(this).val().trim();
+            if(regex.test(email)) {
+                $(this).removeClass('invalid-field');
+                $('#gf-submit').removeClass('invalid-fields');
+            
+            }else {
+                $(this).addClass('invalid-field').val(email + ' - MUST BE A @uwosh.edu');
+                $('#gf-submit').addClass('invalid-fields');
+            }
+        });
+        
+    },
+    
+    
     
     
     
