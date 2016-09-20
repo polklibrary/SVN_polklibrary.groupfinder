@@ -38,11 +38,13 @@ var GroupFinder = {
     active_column : null,
     active_start_row : null,
     active_end_row : null,
+    active_room_title : '',
 
     init : function() {
         var self = this;
         self.setup_addevent_handlers();
         self.validate_emails();
+        self.validate_titles();
         $(document).on('input propertychange change', '#content-core input.pattern-pickadate-date' , function(){
             self.clear();
             self.build();
@@ -193,7 +195,7 @@ var GroupFinder = {
     
     taken_event : function(e, label, start, end) {
         var event = $(e).find('[data-hour='+ start.getHours() +'][data-minute='+ start.getMinutes() +']');
-        $(event).addClass('gf-event').unbind('mousedown mouseup hover').append($('<span class="pat-text-shorty">').html(label));
+        $(event).addClass('gf-event').addClass('gf-start').unbind('mousedown mouseup hover').append($('<span class="pat-text-shorty">').html(label));
         UTILITY.text_shorty($(event)); // shorten text
         var sweep = true;
         var tmp = 0;
@@ -222,6 +224,14 @@ var GroupFinder = {
         var e_min = parseInt($('#gf-end').find('option:selected').val())
         var end = UTILITY.date(date,e_hour,e_min,59);
         
+        // Prepare confirmation screen
+        $('#gf-confirm-room').html(this.active_room_title);
+        $('#gf-confirm-start').html($('#gf-start').find('option:selected').text());
+        $('#gf-confirm-end').html($('#gf-end').find('option:selected').text());
+        $('#gf-confirm-date').html(date);
+        
+        
+        // Add event
         console.log('ADDING EVENT'); 
         var args = {
             'add': '1',
@@ -254,6 +264,7 @@ var GroupFinder = {
         var room = this.get_gf_data($(this.active_column).attr('data-pos'));
         $('#gf-add-overlay #gf-cal').val(room.calendar_id);
         $('#gf-add-overlay #gf-location > h2').html(room.Title);
+        this.active_room_title = room.Title;
         $('#gf-add-overlay #gf-location > div').html($('<div>').html(room.body).text());
         $('#gf-add-overlay #gf-location > img').attr('src', room.image);
         
@@ -282,6 +293,17 @@ var GroupFinder = {
     hide_addevent_overlay : function() {
         this.unsuppress_taken_timeslots();
         $('#gf-add-overlay, #gf-backdrop').fadeOut(200);
+    },
+    
+    show_confirm_overlay : function() {
+        this.unsuppress_taken_timeslots();
+        $('#gf-add-overlay').fadeOut(100, function(){
+            $('#gf-confirmed-overlay').show(200);
+        });
+    },
+    
+    hide_confirm_overlay : function() {
+        $('#gf-confirmed-overlay, #gf-backdrop').fadeOut(200);
     },
     
     suppress_taken_timeslots : function() {
@@ -360,30 +382,23 @@ var GroupFinder = {
             
             
         });
-        
-        // Toggle Privacy and Title Suppression
-        $('#gf-privacy').change(function(){
-            if($(this).is(':checked')) {
-                $('#gf-title-toggle').show();
-                $('#gf-title').val('');
-            }
-            else {
-                $('#gf-title-toggle').hide();
-                $('#gf-title').val('Private');
-            }
-        });
-        
+      
         // Submit Control
         $('#gf-submit').click(function(){
-            if (!$(this).hasClass('invalid-fields')) {
+            if (!($(this).hasClass('invalid-email') || $(this).hasClass('invalid-title'))) {
                 self.add_event_handler();
-                self.hide_addevent_overlay();
+                self.show_confirm_overlay();
             }
         });
         
         // Cancel Control
         $('#gf-cancel').click(function(){
             self.hide_addevent_overlay();
+        });
+        
+        // Confirm Control
+        $('#gf-confirmed-overlay input[type="button"]').click(function(){
+            self.hide_confirm_overlay();
         });
     },
     
@@ -420,20 +435,43 @@ var GroupFinder = {
     
         var regex = /^([a-zA-Z0-9_.+-])+\@uwosh.edu$/;
         
-        $('#gf-email').change(function(){
+        $('#gf-email').blur(function(){
             var email = $(this).val().trim();
             if(regex.test(email)) {
                 $(this).removeClass('invalid-field');
-                $('#gf-submit').removeClass('invalid-fields');
+                $('#gf-submit').removeClass('invalid-email');
             
-            }else {
-                $(this).addClass('invalid-field').val(email + ' - MUST BE A @uwosh.edu');
-                $('#gf-submit').addClass('invalid-fields');
+            }
+            else if (email.length == 0){
+                $(this).addClass('invalid-field').val('');
+                $('#gf-submit').addClass('invalid-email');
+            }
+            else {
+                $(this).addClass('invalid-field').val(email + ' (MUST BE A @uwosh.edu)');
+                $('#gf-submit').addClass('invalid-email');
             }
         });
         
     },
     
+    
+    validate_titles : function() {
+           
+        $('#gf-title').blur(function(){
+            var title = $(this).val().replace(/\s/g, '').replace(/\t/g, '');
+            
+            if (title.length == 0) {
+                $(this).addClass('invalid-field');
+                $('#gf-submit').addClass('invalid-title');
+            }
+            else {
+                $(this).removeClass('invalid-field');
+                $('#gf-submit').removeClass('invalid-title');
+            }
+
+        });
+        
+    },
     
     
     

@@ -70,6 +70,10 @@
     border-bottom-color: pink;
     border-top-color: pink;
 }
+#gf-events > div .gf-event.gf-start {
+    box-shadow: 0px 5px 0 0px #DA7485 inset;
+}
+
 #gf-events .pat-text-shorty {
     color: black;
     display: inline-block;
@@ -81,6 +85,27 @@
     white-space: nowrap;
 }
 
+/* CONFIRM OVERLAY ================================================================*/
+#gf-confirmed-overlay {
+    background-color: #eee;
+    box-shadow: 0 0 10px 4px #000;
+    display: none;
+    left: 50%;
+    margin-left: -200px;
+    padding: 15px;
+    position: absolute;
+    width: 400px;
+    top: 100px;
+    z-index: 10000;
+}
+#gf-confirmed-overlay  h2 {
+    margin: 0;
+}
+#gf-confirmed-overlay  p {
+}
+
+#gf-confirmed-overlay  input {
+}
 
 
 /* ADD OVERLAY ================================================================*/
@@ -143,7 +168,7 @@
     z-index: 1;
 }
 
-#gf-submit.invalid-fields{
+#gf-submit.invalid-email, #gf-submit.invalid-title {
     background-color: #ccc;
 }
 

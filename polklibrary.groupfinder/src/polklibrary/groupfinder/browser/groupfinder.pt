@@ -63,22 +63,32 @@
         
         
         <div id="gf-backdrop" class="gf-backdrop"></div>
+        <div id="gf-confirmed-overlay">
+            <h2>You have scheduled the <span id="gf-confirm-room"></span></h2>
+            <p>
+                Your reservation is from: 
+                <span id="gf-confirm-start"></span> to 
+                <span id="gf-confirm-end"></span> on
+                <span id="gf-confirm-date"></span>
+            </p>
+            <p>
+                If you fail to arrive within 15 minutes of the start of the reservation, your reservation is void.
+                If the room is in use when you arrive for your reservation, please pull up this webpage and show you
+                have the room reserved. Visit the circulation desk for further NetID verification if necessary. 
+            </p>
+            
+            <input class="context" type="button" value="I Understand" />
+        </div>
         <div id="gf-add-overlay">
             <a name="gf-overlay-target"></a>
             <h2>Schedule Room</h2>
         
             <label for="gf-email">Your email:</label>
-            <input id="gf-email" class="pat-safefilter" type="text" name="email" value="" placeholder="something@uwosh.edu" />
+            <input id="gf-email" class="pat-safefilter pat-required" type="text" name="email" value="" placeholder="something@uwosh.edu" />
             
-            <label for="gf-privacy">Allow others to join the study group?</label>
-            <input id="gf-privacy" type="checkbox" name="privacy" />
-            
-            <div id="gf-title-toggle">
-                <label for="gf-title">Provide a study group name:</label>
-                <input id="gf-title" class="pat-safefilter" type="text" name="title" value="Private" placeholder="example: biology 101" />
-            </div>
-            
-            
+            <label for="gf-title">Provide a study group name:</label>
+            <input id="gf-title" class="pat-safefilter pat-required" type="text" name="title" value="Private" placeholder="example: Bio 101 or John's group" />
+
             
             <label for="gf-start">Start Time:</label>
             <select id="gf-start" name="start">
@@ -129,7 +139,7 @@
             </select>
             <div id="gf-warn"></div>
             <div class="gf-buttons">
-                <input id="gf-submit" class="context" type="button" value="Schedule Room" />
+                <input id="gf-submit" class="context invalid-email invalid-title" type="button" value="Schedule Room" />
                 <input id="gf-cancel" class="standalone" type="button" value="Cancel" />
                 <input id="gf-cal" type="hidden" name="gf-cal" value="" />
             </div>
