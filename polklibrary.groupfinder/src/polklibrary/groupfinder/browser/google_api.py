@@ -37,7 +37,7 @@ class GoogleAPI(BrowserView):
                 calendarId = self.request.form.get('id',None), 
                 body = {
                     'summary': self.request.form.get('summary',''),
-                    'description': 'User: ' + self.request.form.get('email', ''),
+                    'description': 'User: ' + self.request.form.get('email', '') + '\nBrowser: '  + self.request.form.get('useragent', '') + '\nCreated: '  + self.request.form.get('created_on', ''),
                     'start': {
                         'dateTime': self.request.form.get('start',''),
                     },

@@ -39,6 +39,8 @@ var GroupFinder = {
     active_start_row : null,
     active_end_row : null,
     active_room_title : '',
+    
+    submission_lock : false,
 
     init : function() {
         var self = this;
@@ -232,26 +234,37 @@ var GroupFinder = {
         
         
         // Add event
-        console.log('ADDING EVENT'); 
-        var args = {
-            'add': '1',
-            'id': gid,
-            'start': start.toISOString(),
-            'end': end.toISOString(),
-            'summary': title,
-            'email': email,
+        if (start < end) {
+            try {
+                useragent = navigator.userAgent;
+            }catch(e) {
+                useragent = 'Could not determine';
+            }
+            var now = new Date();
+            var args = {
+                'add': '1',
+                'id': gid,
+                'start': start.toISOString(),
+                'end': end.toISOString(),
+                'summary': title,
+                'email': email,
+                'useragent': useragent,
+                'created_on': now.toString(),
+            }
+            $.post($('body').attr('data-view-url') + '/google_api', args, function(response){
+                response = $.parseJSON(response);
+                console.log(response.status);
+                if(response.status == 200) {
+                    self.clear();
+                    self.build();
+                }
+                else {
+                    alert('error');
+                }
+            });
         }
-        $.post($('body').attr('data-view-url') + '/google_api', args, function(response){
-            response = $.parseJSON(response);
-            console.log(response.status);
-            if(response.status == 200) {
-                self.clear();
-                self.build();
-            }
-            else {
-                alert('error');
-            }
-        });
+        else
+            alert("Couldn't submit: End time is before start time.");
         
     },
     
@@ -386,8 +399,11 @@ var GroupFinder = {
         // Submit Control
         $('#gf-submit').click(function(){
             if (!($(this).hasClass('invalid-email') || $(this).hasClass('invalid-title'))) {
-                self.add_event_handler();
-                self.show_confirm_overlay();
+                if (!self.submission_lock) {
+                    self.submission_lock = true;
+                    self.add_event_handler();
+                    self.show_confirm_overlay();
+                }
             }
         });
         
@@ -399,6 +415,7 @@ var GroupFinder = {
         // Confirm Control
         $('#gf-confirmed-overlay input[type="button"]').click(function(){
             self.hide_confirm_overlay();
+            self.submission_lock = false;
         });
     },
     
