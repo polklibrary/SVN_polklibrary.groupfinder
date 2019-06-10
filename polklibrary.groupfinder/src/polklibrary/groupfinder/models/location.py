@@ -18,7 +18,7 @@ class ILocation(model.Schema):
         )
         
     calendar_id = schema.TextLine(
-            title=u"Calendar ID",
+            title=u"Calendar ID (deprecated)",
             required=False,
         )
         

@@ -1,4 +1,4 @@
-// DEPRECATED.
+
 
 var UTILITY = {
     
@@ -48,23 +48,33 @@ var GroupFinder = {
         self.validate_emails();
         self.validate_titles();
         $(document).on('input propertychange change', '#content-core input.pattern-pickadate-date' , function(){
-            self.clear();
-            self.build();
+                self.clear();
+                self.build();
         });
         
         setTimeout(function(){
             self.build(); // initial go
         },250);
+        
+        
+        // Register to location based system
+        if (typeof window.CampusLocation !== 'undefined'){
+            window.CampusLocation.OnChange(function(){
+                self.fix_mobile_columns();
+            });           
+        }
     },
     
     build : function(){
-        this.build_loader();
-        this.build_location_columns();
-        this.build_event_list();
-        this.live_timeline();
-        
-        // Loader
-        
+        var v = parseInt($('#content-core input.pattern-pickadate-date').val().replace(/-/g, ''));
+        if (v < 20190608){ //20190608
+            this.build_loader();
+            this.build_location_columns();
+            this.build_event_list();
+            this.live_timeline();
+        }
+        else 
+            alert('Room reservation system is upgrading June 8th and no reservations can be made after this date until upgrade is complete.');
     },
     
     clear : function(){
@@ -77,30 +87,21 @@ var GroupFinder = {
     },
     
     build_location_columns : function() {
-        var cols = {
-            '1':'100',
-            '2':'50',
-            '3':'33',
-            '4':'25',
-            '5':'20',
-            '6':'16',
-        }
-    
+        // SETUP ROOM COLUMN
         for (var i in GFLocations) {
-
-        // Setup Events
-            var div_events = $('<div>').addClass( 'col-' + cols[GFLocations.length] + ' gf-time-column').attr({
+            var div_events = $('<div>').addClass('gf-time-column ' + GFLocations[i].extraCSS).attr({
                 'data-pos': i,
             });
             
             var a = $('<a>').attr('href',GFLocations[i].getURL).html(GFLocations[i].Title);
-            var info = $('<div>').addClass('b show-1024').html(a);
+            var info = $('<div>').addClass('b').html(a);
             $(div_events).append(info);
             
             this.build_timeslots(div_events);
             $('#gf-events').append(div_events);
         }
         
+        this.fix_mobile_columns();
     },
     
     
@@ -171,32 +172,35 @@ var GroupFinder = {
         var self = this;
         var date = $('#content input.pattern-pickadate-date').val();
         var start = UTILITY.date(date,0,0,0);
-        var end = UTILITY.date(date,23,59,59);
         
-        $('#gf-events > div.gf-time-column').each(function(i,e) {
-            var gid = self.get_gf_data($(this).attr('data-pos')).calendar_id;
-        
-            GCAL.get_events(gid, start, end, function(response) {
-                if (response.status == 200) {
-                    var results = GCAL.results(response);
-                    for (var i in results) {
-                        self.taken_event(
-                            e,
-                            results[i].summary,
-                            new Date(results[i].start.dateTime),
-                            new Date(results[i].end.dateTime)
-                        )
-                    }   
-                    $('#gf-loaddrop').hide();
-                }
-                
+        $('#gf-events > div.gf-time-column').each(function(i, element) {
+            var id = self.get_gf_data($(this).attr('data-pos')).Id;
+            var apiurl = $('body').attr('data-base-url') + '/room_api';
+            var args = {
+                'action': 'get',
+                'id': id,
+                'start': start.getTime(),
+            };
+            $.get(apiurl, args, function(response){
+                for (var i in response.data) {
+                    var ev = response.data[i];
+                    self.taken_event(
+                        element,
+                        ev.title,
+                        new Date(ev.start),
+                        new Date(ev.end)
+                    )
+                }   
+                $('#gf-loaddrop').hide();
             });
+            
         });
         
     },
     
-    taken_event : function(e, label, start, end) {
-        var event = $(e).find('[data-hour='+ start.getHours() +'][data-minute='+ start.getMinutes() +']');
+    taken_event : function(element, label, start, end) {
+        var self = this;
+        var event = $(element).find('[data-hour='+ start.getHours() +'][data-minute='+ start.getMinutes() +']');
         $(event).addClass('gf-event').addClass('gf-start').unbind('mousedown mouseup hover').append($('<span class="pat-text-shorty">').html(label));
         UTILITY.text_shorty($(event)); // shorten text
         var sweep = true;
@@ -208,15 +212,43 @@ var GroupFinder = {
                 break;
             $(event).unbind('mousedown mouseup hover').addClass('gf-event');
         }
+        
+        $(element).find('[data-hour='+ start.getHours() +'][data-minute='+ start.getMinutes() +'].gf-start').on('click', function(){
+            if ($('body').hasClass('userrole-authenticated') && GFCurrentUserRoles.Edit) {
+                var confirmed = confirm("Remove reservation?");
+                if (confirmed)
+                    self.delete_event_handler(this,start,end);
+            }
+        });
     },
     
+    delete_event_handler : function(element,start,end) {
+        var self = this;
+        var id = self.get_gf_data($(element).parents('div.gf-time-column').attr('data-pos')).Id;
+        var apiurl = $('body').attr('data-base-url') + '/room_api';
+        var args = {
+            'action': 'remove',
+            'id': id,
+            'start': start.getTime(),
+            'end': end.getTime(),
+        };
+        $.get(apiurl, args, function(response){
+            if(response.code == 200) {
+                self.clear();
+                self.build();
+            }
+            else {
+                alert('error');
+            }
+        });
+    },    
     
     add_event_handler : function() {
         var self = this;
         var date = $('#content input.pattern-pickadate-date').val();
         var title = $('#gf-title').val();
         var email = $('#gf-email').val();
-        var gid = $('#gf-cal').val();
+        var id = $('#gf-cal').val();
         
         var s_hour = parseInt($('#gf-start').find('option:selected').attr('data-hour'));
         var s_min = parseInt($('#gf-start').find('option:selected').val())
@@ -241,20 +273,17 @@ var GroupFinder = {
                 useragent = 'Could not determine';
             }
             var now = new Date();
+            var apiurl = $('body').attr('data-base-url') + '/room_api';
             var args = {
-                'add': '1',
-                'id': gid,
-                'start': start.toISOString(),
-                'end': end.toISOString(),
-                'summary': title,
+                'action': 'add',
+                'id': id,
                 'email': email,
-                'useragent': useragent,
-                'created_on': now.toString(),
-            }
-            $.post($('body').attr('data-view-url') + '/google_api', args, function(response){
-                response = $.parseJSON(response);
-                console.log(response.status);
-                if(response.status == 200) {
+                'title': title,
+                'start': start.getTime(),
+                'end': end.getTime(),
+            };
+            $.get(apiurl, args, function(response){
+                if(response.code == 200) {
                     self.clear();
                     self.build();
                 }
@@ -262,6 +291,7 @@ var GroupFinder = {
                     alert('error');
                 }
             });
+            
         }
         else
             alert("Couldn't submit: End time is before start time.");
@@ -275,7 +305,7 @@ var GroupFinder = {
             
         var title = $('#gf-title').val(''); // reset
         var room = this.get_gf_data($(this.active_column).attr('data-pos'));
-        $('#gf-add-overlay #gf-cal').val(room.calendar_id);
+        $('#gf-add-overlay #gf-cal').val(room.Id);
         $('#gf-add-overlay #gf-location > h2').html(room.Title);
         this.active_room_title = room.Title;
         $('#gf-add-overlay #gf-location > div').html($('<div>').html(room.body).text());
@@ -391,14 +421,11 @@ var GroupFinder = {
                 $('#gf-add-overlay #gf-end').find('option:selected').prop('selected',false);
                 $('#gf-add-overlay #gf-end').find('option[data-hour=' + paddedstart.getHours() +'][value='+ paddedstart.getMinutes() +']').prop('selected',true);
             }
-
-            
-            
         });
       
         // Submit Control
         $('#gf-submit').click(function(){
-            if (!($(this).hasClass('invalid-email') || $(this).hasClass('invalid-title'))) {
+            if (!($(this).hasClass('invalid-email') || $(this).hasClass('invalid-title') || $(this).hasClass('invalid-word'))) {
                 if (!self.submission_lock) {
                     self.submission_lock = true;
                     self.add_event_handler();
@@ -455,6 +482,7 @@ var GroupFinder = {
         $('#gf-email').blur(function(){
             var email = $(this).val().trim();
             if(regex.test(email)) {
+                $('label[for="gf-email"]').removeClass('invalid-email-message');
                 $(this).removeClass('invalid-field');
                 $('#gf-submit').removeClass('invalid-email');
             
@@ -464,7 +492,8 @@ var GroupFinder = {
                 $('#gf-submit').addClass('invalid-email');
             }
             else {
-                $(this).addClass('invalid-field').val(email + ' (MUST BE A @uwosh.edu)');
+                $(this).addClass('invalid-field');
+                $('label[for="gf-email"]').addClass('invalid-email-message');
                 $('#gf-submit').addClass('invalid-email');
             }
         });
@@ -473,28 +502,71 @@ var GroupFinder = {
     
     
     validate_titles : function() {
-           
+        $('#gf-title').on('keyup', function(){
+            var banned_word_found = false;
+            for(var i in GFBannedWords){
+                var banned_word = GFBannedWords[i];
+                if ($(this).val().indexOf(banned_word) != -1) {
+                    banned_word_found = true
+                    break
+                }
+            }
+            if (banned_word_found){
+                $('label[for="gf-title"]').addClass('invalid-wording-message');
+                $('#gf-submit').addClass('invalid-word');
+            }
+            else {
+                $('label[for="gf-title"]').removeClass('invalid-wording-message');
+                $('#gf-submit').removeClass('invalid-word');
+            }
+        });
+        
         $('#gf-title').blur(function(){
             var title = $(this).val().replace(/\s/g, '').replace(/\t/g, '');
             
             if (title.length == 0) {
                 $(this).addClass('invalid-field');
                 $('#gf-submit').addClass('invalid-title');
+                $('label[for="gf-title"]').addClass('invalid-title-message');
             }
             else {
                 $(this).removeClass('invalid-field');
+                $('label[for="gf-title"]').removeClass('invalid-title-message');
                 $('#gf-submit').removeClass('invalid-title');
             }
 
         });
         
     },
+   
     
+    fix_mobile_columns : function() {
+        var VisibleColumns = $('.gf-time-column:not(:hidden)').length;
+        var Columns = {
+            '1':'col-100',
+            '2':'col-50',
+            '3':'col-33',
+            '4':'col-25',
+            '5':'col-20',
+            '6':'col-16',
+        }
     
+        $('.gf-time-column').removeClass('col-100 col-50 col-33 col-25 col-20 col-16');
+        $('#gf-locations > div').removeClass('col-100 col-50 col-33 col-25 col-20 col-16');
+        
+        $('.gf-time-column').addClass(Columns[VisibleColumns]);
+        $('#gf-locations > div').addClass(Columns[VisibleColumns]);
+    },
     
     
 }
 
 $(document).ready(function(){
     GroupFinder.init();
+    
+    try{
+        CampusLocation.OnChange(function(){
+            GroupFinder.fix_mobile_columns();
+        });
+    } catch(e){}
 });

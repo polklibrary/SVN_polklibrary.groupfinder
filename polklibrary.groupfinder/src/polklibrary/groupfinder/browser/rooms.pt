@@ -12,33 +12,10 @@
 
 	<metal:block fill-slot="javascript_head_slot">
         
-        <script src="https://apis.google.com/js/client.js"></script>
-        <script src="++resource++polklibrary.groupfinder/groupfinder.gcal.js"></script>
-        <script src="++resource++polklibrary.groupfinder/groupfinder.js"></script>
-
-        <script type="text/javascript">
-            //$(document).ready(function(){
-                
-            //    GroupFinderGCAL.oauth(function(){
-                    
-            //        GroupFinderGCAL.get_events(function(response){
-            //            console.log('GET:' );
-            //            console.log(response);
-            //        });
-                    
-                    
-            //        GroupFinderGCAL.add_event(function(response){
-            //            console.log('ADD:' );
-            //            console.log(response);
-            //        });
-            //    });
-            //});
-            
-        </script>
 	</metal:block>
     
     <metal:content-title fill-slot="content-title" >
-        <h1 class="documentFirstHeading">GroupFinder</h1>
+        <h1 class="documentFirstHeading">${context/Title}</h1>
     </metal:content-title>
         
 	<metal:content-description fill-slot="content-description"></metal:content-description>
@@ -46,10 +23,14 @@
 	<metal:content fill-slot="content-core">
         
         <div class="column">
-        
-            <
-        
+            <div class="col-50">
+                <tal:block replace="structure context/body/output|nothing" />
+            </div>
+            <div class="col-50">
+                <img src="${context/absolute_url}/@@download/image/${context/image/filename}" alt="Room Image" />
+            </div>
         </div>
+        <div class="clear"></div>
         
 	</metal:content>
 

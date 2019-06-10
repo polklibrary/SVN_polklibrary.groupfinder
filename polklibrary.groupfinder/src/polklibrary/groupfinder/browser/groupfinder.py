@@ -6,6 +6,7 @@ from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 import datetime,json,urllib
 
+
 class GroupFinder(BrowserView):
 
     template = ViewPageTemplateFile('groupfinder.pt')
@@ -14,6 +15,50 @@ class GroupFinder(BrowserView):
         self.request.response.setHeader('Cache-Control', 'max-age=60, s-maxage=60, public, must-revalidate')
         return self.template()
 
+    def current_userroles(self):
+        return json.dumps({
+            'Review': api.user.has_permission('Review'),
+            'Add': api.user.has_permission('Add'),
+            'Edit': api.user.has_permission('Edit'),
+            'View': api.user.has_permission('View'),
+        })
+        
+    def banned_users(self):
+        listing = self.context.banned
+        if listing == None:
+            listing = ""
+        return json.dumps(listing.replace('\r','').split('\n'))
+        
+    def banned_words(self):
+        listing = self.context.banned_words
+        if listing == None:
+            listing = ""
+        return json.dumps(listing.replace('\r','').replace('_',' ').split('\n'))
+
+    def get_rooms(self):
+        rooms = []
+        brains = api.content.find(context=api.portal.get(), portal_type='polklibrary.groupfinder.models.room')
+        for brain in brains:
+            room = brain.getObject()
+            body = ''
+            if room.body:
+                body = room.body.output
+            cache = {}
+            if room.cached != None:
+                cache = room.cached
+            rooms.append({
+                'Id': str(room.getId()),
+                'Title': str(room.Title()),
+                'image': room.absolute_url() + '/@@download/image/' + str(room.image.filename),
+                'getURL': room.absolute_url(),
+                'extraCSS': room.extra_css,
+                'body': body,
+            })
+        return rooms
+        
+    def get_rooms_json(self):
+        return json.dumps(self.get_rooms())
+        
     def get_today(self):
         return datetime.datetime.now().strftime('%Y-%m-%d')
     

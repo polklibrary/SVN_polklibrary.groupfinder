@@ -37,6 +37,7 @@
 }
 #gf-locations a{
     color: #333;
+    font-size: 12px;
     font-style: italic;
 }
 
@@ -157,6 +158,11 @@
     width: 100%;
 }
 
+.gf-title:after {
+    content: attr(data-title);
+    position: absolute;
+    top: -5px;
+}
 
 
 #gf-timeline {
@@ -168,7 +174,7 @@
     z-index: 1;
 }
 
-#gf-submit.invalid-email, #gf-submit.invalid-title {
+#gf-submit.invalid-email, #gf-submit.invalid-title, #gf-submit.invalid-word {
     background-color: #ccc;
 }
 
@@ -176,5 +182,65 @@
     border: 1px solid red !important;
     background-color: pink !important;
 }
+label[for="gf-email"]{ position: relative; } 
+label[for="gf-email"].invalid-email-message::after{
+    position: absolute;
+    top: 0px;
+    color: red;
+    margin-left: 10px;
+    content: 'uwosh@edu email required';
+}
+label[for="gf-title"]{ position: relative; } 
+label[for="gf-title"].invalid-title-message::after{
+    position: absolute;
+    top: 0px;
+    color: red;
+    margin-left: 10px;
+    content: 'Reservation title is required';
+}
+label[for="gf-title"].invalid-wording-message::after{
+    position: absolute;
+    top: 0px;
+    color: red;
+    margin-left: 10px;
+    content: 'Blocked word or # detected';
+}
+
+#groupfinder-analytics{
+    
+}
+
+#analytics-count-results {
+    background-color: #eee;
+    border: 1px solid #666;
+    padding: 10px;
+    line-height: 2em;
+}
+
+#analytics-count-results .analytics-title{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+
+#analytics-count-results .analytics-value{
+    color: #00960e;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

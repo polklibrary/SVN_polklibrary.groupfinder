@@ -4,7 +4,20 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="polklibrary.groupfinder">
 
-        
+  <browser:page
+      for="polklibrary.groupfinder.models.groupfinder.IGroupFinder"
+      name="room_analytics"
+      class=".analytics_view.AnalyticsView"
+      permission="cmf.ModifyPortalContent"
+      />
+    
+  <browser:page
+      for="polklibrary.groupfinder.models.groupfinder.IGroupFinder"
+      name="room_api"
+      class=".api.RoomAPI"
+      permission="zope2.View"
+      />
+      
   <browser:page
       for="polklibrary.groupfinder.models.groupfinder.IGroupFinder"
       name="google_api"
@@ -23,6 +36,13 @@
       for="polklibrary.groupfinder.models.location.ILocation"
       name="location_view"
       class=".location.Location"
+      permission="zope2.View"
+      />
+    
+  <browser:page
+      for="polklibrary.groupfinder.models.room.IRoom"
+      name="room_view"
+      class=".rooms.Rooms"
       permission="zope2.View"
       />
     

@@ -12,21 +12,18 @@
     
 
 	<metal:block fill-slot="javascript_head_slot">
-    
-        <script src="https://apis.google.com/js/client.js"></script>
-        <script src="++resource++polklibrary.groupfinder/groupfinder.gcal.js"></script>
         <script>
-            var GFLocations = ${view/get_locations_json};
-            GCAL.APIKEY = '${context/api_key}';
-            GCAL.CLIENTID = '${context/client_id}';
+            var GFLocations = ${view/get_rooms_json};
+            var GFCurrentUserRoles = ${view/current_userroles}; // protected on api end too.
+            var GFBannedEmails = ${view/banned_users}; // protected on api end too.
+            var GFBannedWords = ${view/banned_words}; // protected on api end too.
         </script>
-        <script src="++resource++polklibrary.groupfinder/groupfinder.js"></script>
-        <script src="++resource++polklibrary.groupfinder/safe.filter.js"></script>
+        <script src="++resource++polklibrary.groupfinder/roomfinder.js"></script>
 	</metal:block>
     
     
     <metal:content-title fill-slot="content-title" >
-        <h1 class="documentFirstHeading">GroupFinder</h1>
+        <h1 class="documentFirstHeading">${context/Title}</h1>
     </metal:content-title>
         
 	<metal:content-description fill-slot="content-description"></metal:content-description>
@@ -53,8 +50,8 @@
             </div>
             
             <div id="gf-locations" class="col-100 hide-1024">
-                <tal:block repeat="location view/get_locations">
-                    <div class="col-25" data-pos="${repeat/location/index}">
+                <tal:block repeat="location view/get_rooms">
+                    <div class="col-20 ${location/extraCSS}" data-pos="${repeat/location/index}">
                         <div class="b">
                             <a href="${location/getURL}">${location/Title}</a>
                         </div>
@@ -91,10 +88,10 @@
             <h2>Schedule Room</h2>
         
             <label for="gf-email">Your email:</label>
-            <input id="gf-email" class="pat-safefilter pat-required" type="text" name="email" value="" placeholder="something@uwosh.edu" />
+            <input id="gf-email" class="pat-required" type="text" name="email" value="" placeholder="something@uwosh.edu" />
             
-            <label for="gf-title">Provide a study group name:</label>
-            <input id="gf-title" class="pat-safefilter pat-required" type="text" name="title" value="Private" placeholder="example: Bio 101 or John's group" />
+            <label for="gf-title">Group name:</label>
+            <input id="gf-title" class="pat-required" type="text" name="title" value="Private" placeholder="example: Bio 101 or John's group" maxlength="25" />
 
             
             <label for="gf-start">Start Time:</label>
