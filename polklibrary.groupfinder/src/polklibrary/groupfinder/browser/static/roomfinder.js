@@ -67,14 +67,14 @@ var GroupFinder = {
     
     build : function(){
         var v = parseInt($('#content-core input.pattern-pickadate-date').val().replace(/-/g, ''));
-        if (v < 20190608){ //20190608
+        //if (v < 20190608){ //20190608
             this.build_loader();
             this.build_location_columns();
             this.build_event_list();
             this.live_timeline();
-        }
-        else 
-            alert('Room reservation system is upgrading June 8th and no reservations can be made after this date until upgrade is complete.');
+        //}
+        //else 
+        //    alert('Room reservation system is upgrading June 8th and no reservations can be made after this date until upgrade is complete.');
     },
     
     clear : function(){
