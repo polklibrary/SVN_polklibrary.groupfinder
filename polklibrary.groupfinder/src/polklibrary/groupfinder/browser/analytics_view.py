@@ -17,16 +17,20 @@ class AnalyticsView(BrowserView):
         start = self.request.form.get('form.start', '')
         end = self.request.form.get('form.end', '')
         submit = self.request.form.get('form.submit', '')
-    
         self.count_results = []
-        if submit:
-            self.count_results = self.get_counts(start, end)
+        if submit and start != '' and end != '':
+            try:
+                start_date = int(start.replace('-',''))
+                end_date = int(end.replace('-','')) + 1
+                self.count_results = self.get_counts(start_date, end_date)
+            except Exceptiona as e:
+                pass
     
         return self.template()
         
         
                 
-    def get_counts(self,start,end):
+    def get_counts(self,start_date,end_date):
         results = []
         brains = api.content.find(context=api.portal.get(), portal_type='polklibrary.groupfinder.models.room')
         for brain in brains:
@@ -36,9 +40,6 @@ class AnalyticsView(BrowserView):
             if cache == None:
                 cache = '{}'
             cache = json.loads(cache)
-                        
-            start_date = int(start.replace('-',''))
-            end_date = int(end.replace('-',''))
             
             counts = 0
             for i in range(start_date, end_date):
