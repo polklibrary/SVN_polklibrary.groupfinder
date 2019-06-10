@@ -17,10 +17,10 @@ class GroupFinder(BrowserView):
 
     def current_userroles(self):
         return json.dumps({
-            'Review': api.user.has_permission('Review'),
-            'Add': api.user.has_permission('Add'),
-            'Edit': api.user.has_permission('Edit'),
-            'View': api.user.has_permission('View'),
+            'Review': api.user.has_permission('Review', obj=self.context),
+            'Add': api.user.has_permission('Add', obj=self.context),
+            'Edit': api.user.has_permission('Modify portal content', obj=self.context),
+            'View': api.user.has_permission('View', obj=self.context),
         })
         
     def banned_users(self):

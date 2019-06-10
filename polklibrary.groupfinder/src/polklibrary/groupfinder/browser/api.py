@@ -91,7 +91,7 @@ class RoomAPI(BrowserView):
         return []
         
     def remove_event(self,room_id,start,end):
-        if api.user.has_permission('Edit') or api.user.has_permission('Add'):
+        if api.user.has_permission('Modify portal content', obj=self.context) or api.user.has_permission('Edit', obj=self.context):
             brains = api.content.find(context=api.portal.get(), id=room_id, portal_type='polklibrary.groupfinder.models.room')
             if len(brains) == 1:
                 obj = brains[0].getObject()
