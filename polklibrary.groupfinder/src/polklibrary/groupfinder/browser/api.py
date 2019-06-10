@@ -69,6 +69,7 @@ class RoomAPI(BrowserView):
                 'end' : int(end),
                 'title' : title,
                 'email' : email,
+                'ip' : self.get_ip(),
             })
             
             obj.cached = json.dumps(cache)
@@ -108,6 +109,23 @@ class RoomAPI(BrowserView):
                     cache[DateID] = list(filter(lambda d: d['start'] != start and d['end'] != end, cache[DateID]))
                     obj.cached = json.dumps(cache)
 
+    def get_ip(self):
+        if "HTTP_X_FORWARDED_FOR" in self.request.environ:
+            # Virtual host
+            ip = self.request.environ["HTTP_X_FORWARDED_FOR"]
+        elif "HTTP_HOST" in self.request.environ:
+            # Non-virtualhost
+            ip = self.request.environ["REMOTE_ADDR"]
+        else:
+            # Unit test code?
+            ip = '0.0.0.0'
+
+        if ',' in ip:
+            ips = ip.split(',')
+            return ips[0]
+        return ip
+
+        
     @property
     def portal(self):
         return api.portal.get()
