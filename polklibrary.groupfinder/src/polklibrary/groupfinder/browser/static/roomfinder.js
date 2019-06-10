@@ -556,6 +556,14 @@ var GroupFinder = {
         
         $('.gf-time-column').addClass(Columns[VisibleColumns]);
         $('#gf-locations > div').addClass(Columns[VisibleColumns]);
+        if (VisibleColumns == 0){
+            $('#gf-locations,#gf-events').hide();
+            $('#gf-no-rooms').show();
+        }
+        else {
+            $('#gf-locations,#gf-events').show();
+            $('#gf-no-rooms').hide();
+        }
     },
     
     
