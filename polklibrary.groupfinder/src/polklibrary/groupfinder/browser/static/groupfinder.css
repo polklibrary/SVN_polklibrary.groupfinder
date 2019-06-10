@@ -28,6 +28,12 @@
     height: 5000px;
 }
 
+#gf-events > div .gf-timeslot.gf-current-live {
+    background-color: rgba(0, 168, 255, 0.15);
+    border-top: 3px dashed rgba(0, 168, 255, 0.80) !important;
+    border-bottom: 3px dashed rgba(0, 168, 255, 0.80) !important;
+}
+
 #gf-backdrop {
     position: fixed;
 }
@@ -173,12 +179,11 @@
 
 
 #gf-timeline {
-    background-color: rgba(228, 112, 112, 0.8);
-    height: 2px;
     left: 0;
     position: absolute;
     right: 0;
     z-index: 1;
+    border-bottom: 3px dashed rgba(0, 164, 255, 0.85);
 }
 
 #gf-submit.invalid-email, #gf-submit.invalid-title, #gf-submit.invalid-word {

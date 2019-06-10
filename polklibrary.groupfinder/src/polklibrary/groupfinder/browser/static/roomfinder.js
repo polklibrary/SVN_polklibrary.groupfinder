@@ -134,7 +134,7 @@ var GroupFinder = {
                 $(column).append(div);
             }
         }
-        self.row_height = $('.gf-timeslot').outerHeight();
+        self.row_height = $('.gf-timeslot:visible').outerHeight();
     },    
     
     // build_timeslots : function(column) {  
@@ -469,7 +469,7 @@ var GroupFinder = {
     
     timeline_bar : function() {
         var now = new Date();
-        var target = this.row_height * (now.getHours() * 4) + ((now.getMinutes()/15) * this.row_height);
+        var target = (this.row_height * (now.getHours() * 4)) + ((now.getMinutes()/15) * this.row_height);
         $('#gf-timeline').css('top', target + 'px');
         $('#gf-loaddrop').css('background-position', 'center ' + (target-50) + 'px');
     },
