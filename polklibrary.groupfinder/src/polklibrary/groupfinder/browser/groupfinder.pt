@@ -60,7 +60,7 @@
             </div>
             <div id="gf-events" class="col-100" style="position: relative"></div>
             
-            <div id="gf-no-rooms" class="hide col-100">This library has no reservable rooms.</div>
+            <div id="gf-no-rooms" class="col-100">This library has no reservable rooms.</div>
             
             <div class="clear"></div>
         

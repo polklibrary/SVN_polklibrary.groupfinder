@@ -541,6 +541,8 @@ var GroupFinder = {
    
     
     fix_mobile_columns : function() {
+        $('#gf-locations,#gf-events').show();
+
         var VisibleColumns = $('.gf-time-column:not(:hidden)').length;
         var Columns = {
             '1':'col-100',
@@ -550,21 +552,22 @@ var GroupFinder = {
             '5':'col-20',
             '6':'col-16',
         }
-    
+
         $('.gf-time-column').removeClass('col-100 col-50 col-33 col-25 col-20 col-16');
         $('#gf-locations > div').removeClass('col-100 col-50 col-33 col-25 col-20 col-16');
-        
+
         $('.gf-time-column').addClass(Columns[VisibleColumns]);
         $('#gf-locations > div').addClass(Columns[VisibleColumns]);
+        
         if (VisibleColumns == 0){
             $('#gf-locations,#gf-events').hide();
             $('#gf-no-rooms').show();
         }
         else {
-            $('#gf-locations,#gf-events').show();
             $('#gf-no-rooms').hide();
         }
     },
+
     
     
 }
