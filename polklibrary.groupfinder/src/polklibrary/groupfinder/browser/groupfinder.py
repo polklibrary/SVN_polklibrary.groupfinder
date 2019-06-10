@@ -37,7 +37,7 @@ class GroupFinder(BrowserView):
 
     def get_rooms(self):
         rooms = []
-        brains = api.content.find(context=api.portal.get(), portal_type='polklibrary.groupfinder.models.room')
+        brains = api.content.find(context=api.portal.get(), portal_type='polklibrary.groupfinder.models.room', sort_on='getObjPositionInParent', sort_order='ascending')
         for brain in brains:
             room = brain.getObject()
             body = ''
