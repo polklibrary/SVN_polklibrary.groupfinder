@@ -39,7 +39,7 @@ class AnalyticsView(BrowserView):
         
     def get_hours_usage(self,start_date,end_date):
         results = []
-        brains = api.content.find(context=api.portal.get(), portal_type='polklibrary.groupfinder.models.room')
+        brains = api.content.find(context=api.portal.get(), portal_type='polklibrary.groupfinder.models.room', sort_on='getObjPositionInParent', sort_order='ascending')
         for brain in brains:
             obj = brain.getObject()
             cache = obj.cached
@@ -69,7 +69,7 @@ class AnalyticsView(BrowserView):
         
     def get_counts(self,start_date,end_date):
         results = []
-        brains = api.content.find(context=api.portal.get(), portal_type='polklibrary.groupfinder.models.room')
+        brains = api.content.find(context=api.portal.get(), portal_type='polklibrary.groupfinder.models.room', sort_on='getObjPositionInParent', sort_order='ascending')
         for brain in brains:
             obj = brain.getObject()
             

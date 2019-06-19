@@ -47,13 +47,13 @@
             
                 <tal:block condition="python:request.form.get('form.submit','')=='Get Counts'">
                     <div class="analytics-title">Usage Counts</div>
-                    <div class="analytics-value" tal:repeat="result results"><b>${result/Title}:</b> ${result/Counts}</div>
+                    <div class="analytics-value" tal:repeat="result results"><b class="analytics-room-title">${result/Title}:</b> ${result/Counts}</div>
                 </tal:block>
                 
                 <tal:block condition="python:request.form.get('form.submit','')=='Get Usage By Hour'">
                     <div class="analytics-title">Rooms usage by hour</div>
                     <div class="analytics-value" tal:repeat="result results">
-                        <b>${result/Title}:</b>
+                        <b class="analytics-room-title">${result/Title}:</b>
                         <div tal:repeat="index python:range(0,24)">
                             <tal:block condition="python: index in result['Hours']">
                                 ${index}:00 - <tal:block content="python:result['Hours'][index]"></tal:block>
