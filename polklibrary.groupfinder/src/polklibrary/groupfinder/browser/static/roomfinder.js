@@ -188,7 +188,9 @@ var GroupFinder = {
                         element,
                         ev.title,
                         new Date(ev.start),
-                        new Date(ev.end)
+                        new Date(ev.end),
+                        ev.f1,
+                        ev.f2
                     )
                 }   
                 $('#gf-loaddrop').hide();
@@ -198,9 +200,10 @@ var GroupFinder = {
         
     },
     
-    taken_event : function(element, label, start, end) {
+    taken_event : function(element, label, start, end, field1, field2) {
         var self = this;
         var event = $(element).find('[data-hour='+ start.getHours() +'][data-minute='+ start.getMinutes() +']');
+        $(event).attr({'data-field1':field1, 'data-field2':field2 });
         $(event).addClass('gf-event').addClass('gf-start').unbind('mousedown mouseup hover').append($('<span class="pat-text-shorty">').html(label));
         UTILITY.text_shorty($(event)); // shorten text
         var sweep = true;
@@ -215,7 +218,9 @@ var GroupFinder = {
         
         $(element).find('[data-hour='+ start.getHours() +'][data-minute='+ start.getMinutes() +'].gf-start').on('click', function(){
             if ($('body').hasClass('userrole-authenticated') && GFCurrentUserRoles.Edit) {
-                var confirmed = confirm("Remove reservation?");
+                var f1 = atob($(this).attr('data-field1'));
+                var f2 = atob($(this).attr('data-field2'));
+                var confirmed = confirm("User: " + f2 + '\nIP:     ' + f1 + '\n\nRemove reservation?');
                 if (confirmed)
                     self.delete_event_handler(this,start,end);
             }

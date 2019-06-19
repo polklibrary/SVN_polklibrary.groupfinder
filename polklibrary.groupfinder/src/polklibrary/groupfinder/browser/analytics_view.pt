@@ -24,27 +24,45 @@
 	<metal:content fill-slot="content-core">
         
         <div id="groupfinder-analytics" class="column">
-            
+            <h3>Analytic Options</h3>
             <br />
             <form method="post">
-                <h3>Usage Counts</h3>
                 <label>
                     Start Date
-                    <input type="text" value="" name="form.start" placeholder="YYYY-MM-DD" />
+                    <input type="text" value="${view/start_value}" name="form.start" placeholder="YYYY-MM-DD" />
                 </label>
                 
                 <label>
                     End Date
-                    <input type="text" value="" name="form.end" placeholder="YYYY-MM-DD" />
+                    <input type="text" value="${view/end_value}" name="form.end" placeholder="YYYY-MM-DD" />
                 </label>
                 
-                <input type="hidden" value="1" name="form.counts" />
                 <input type="submit" value="Get Counts" name="form.submit" />
+                <input type="submit" value="Get Usage By Hour" name="form.submit" />
             </form>
-        
+
+            <br />
+            
             <div id="analytics-count-results" tal:define="results view/count_results" tal:condition="results">
-                <div class="analytics-title">Usage Counts</div>
-                <div class="analytics-value" tal:repeat="result results">${result/Title}: ${result/Counts}</div>
+            
+                <tal:block condition="python:request.form.get('form.submit','')=='Get Counts'">
+                    <div class="analytics-title">Usage Counts</div>
+                    <div class="analytics-value" tal:repeat="result results"><b>${result/Title}:</b> ${result/Counts}</div>
+                </tal:block>
+                
+                <tal:block condition="python:request.form.get('form.submit','')=='Get Usage By Hour'">
+                    <div class="analytics-title">Rooms usage by hour</div>
+                    <div class="analytics-value" tal:repeat="result results">
+                        <b>${result/Title}:</b>
+                        <div tal:repeat="index python:range(0,24)">
+                            <tal:block condition="python: index in result['Hours']">
+                                ${index}:00 - <tal:block content="python:result['Hours'][index]"></tal:block>
+                            </tal:block>
+                        </div>
+                    
+                    </div>
+                </tal:block>
+                
             </div>
         
         </div>

@@ -5,7 +5,7 @@ from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 from zope.interface import alsoProvides
 from plone.protect.interfaces import IDisableCSRFProtection
-import datetime,json,urllib
+import datetime,json,urllib,base64
 
 
 class RoomAPI(BrowserView):
@@ -89,7 +89,14 @@ class RoomAPI(BrowserView):
             dt = datetime.datetime.fromtimestamp(start/1000.0)            
             dtID = str(dt.strftime('%Y%m%d'))
             if dtID in cache:
-                return cache[dtID]
+                data = cache[dtID]
+                for d in data:
+                    print d
+                    d['f1'] = base64.b64encode(d['ip'])
+                    d['f2'] = base64.b64encode(d['email'])
+                    del d['ip']
+                    del d['email']
+                return data
         return []
         
     def remove_event(self,room_id,start,end):
