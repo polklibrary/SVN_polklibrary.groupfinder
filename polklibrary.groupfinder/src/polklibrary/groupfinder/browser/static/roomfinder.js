@@ -221,8 +221,12 @@ var GroupFinder = {
                 var f1 = atob($(this).attr('data-field1'));
                 var f2 = atob($(this).attr('data-field2'));
                 var confirmed = confirm("User: " + f2 + '\nIP:     ' + f1 + '\n\nRemove reservation?');
-                if (confirmed)
+                if (confirmed){
                     self.delete_event_handler(this,start,end);
+                    setTimeout(function(){
+                        location.reload();
+                    },250);
+                }
             }
         });
     },
@@ -448,6 +452,7 @@ var GroupFinder = {
         $('#gf-confirmed-overlay input[type="button"]').click(function(){
             self.hide_confirm_overlay();
             self.submission_lock = false;
+            location.reload();
         });
     },
     
