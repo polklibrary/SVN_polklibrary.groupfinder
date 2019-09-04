@@ -22,6 +22,9 @@ src/polklibrary/groupfinder/interfaces.py
 src/polklibrary/groupfinder/setuphandlers.py
 src/polklibrary/groupfinder/testing.py
 src/polklibrary/groupfinder/browser/__init__.py
+src/polklibrary/groupfinder/browser/analytics_view.pt
+src/polklibrary/groupfinder/browser/analytics_view.py
+src/polklibrary/groupfinder/browser/api.py
 src/polklibrary/groupfinder/browser/configure.zcml
 src/polklibrary/groupfinder/browser/google_api.py
 src/polklibrary/groupfinder/browser/groupfinder.pt
@@ -37,6 +40,7 @@ src/polklibrary/groupfinder/browser/static/groupfinder.gcal.js
 src/polklibrary/groupfinder/browser/static/groupfinder.js
 src/polklibrary/groupfinder/browser/static/helpinfo.jpg
 src/polklibrary/groupfinder/browser/static/loading.gif
+src/polklibrary/groupfinder/browser/static/roomfinder.js
 src/polklibrary/groupfinder/browser/static/safe.filter.js
 src/polklibrary/groupfinder/locales/polklibrary.groupfinder.pot
 src/polklibrary/groupfinder/locales/update.sh
@@ -44,12 +48,14 @@ src/polklibrary/groupfinder/models/__init__.py
 src/polklibrary/groupfinder/models/configure.zcml
 src/polklibrary/groupfinder/models/groupfinder.py
 src/polklibrary/groupfinder/models/location.py
+src/polklibrary/groupfinder/models/room.py
 src/polklibrary/groupfinder/profiles/default/browserlayer.xml
 src/polklibrary/groupfinder/profiles/default/metadata.xml
 src/polklibrary/groupfinder/profiles/default/polklibrarygroupfinder_default.txt
 src/polklibrary/groupfinder/profiles/default/types.xml
 src/polklibrary/groupfinder/profiles/default/types/polklibrary.groupfinder.models.groupfinder.xml
 src/polklibrary/groupfinder/profiles/default/types/polklibrary.groupfinder.models.location.xml
+src/polklibrary/groupfinder/profiles/default/types/polklibrary.groupfinder.models.room.xml
 src/polklibrary/groupfinder/profiles/uninstall/browserlayer.xml
 src/polklibrary/groupfinder/profiles/uninstall/polklibrarygroupfinder_uninstall.txt
 src/polklibrary/groupfinder/tests/__init__.py

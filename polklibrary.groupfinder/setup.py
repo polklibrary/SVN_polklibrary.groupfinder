@@ -46,8 +46,6 @@ setup(
         'plone.api',
         'setuptools',
         'z3c.jbot',
-        'google-api-python-client==1.5.0',
-        'oauth2client==2.0.1',
     ],
     extras_require={
         'test': [

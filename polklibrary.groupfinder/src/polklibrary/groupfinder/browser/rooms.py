@@ -4,7 +4,6 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from polklibrary.google.hours.browser.hours import Hours
 import datetime,json
 
 class Rooms(BrowserView):

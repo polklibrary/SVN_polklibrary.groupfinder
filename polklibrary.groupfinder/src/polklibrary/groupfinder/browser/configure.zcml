@@ -18,12 +18,6 @@
       permission="zope2.View"
       />
       
-  <browser:page
-      for="polklibrary.groupfinder.models.groupfinder.IGroupFinder"
-      name="google_api"
-      class=".google_api.GoogleAPI"
-      permission="zope2.View"
-      />
       
   <browser:page
       for="polklibrary.groupfinder.models.groupfinder.IGroupFinder"
