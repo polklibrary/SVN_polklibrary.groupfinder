@@ -12,7 +12,7 @@ class GroupFinder(BrowserView):
     template = ViewPageTemplateFile('groupfinder.pt')
    
     def __call__(self):
-        self.request.response.setHeader('Cache-Control', 'no-store')
+        self.request.response.setHeader('Cache-Control', 'max-age=0, must-revalidate, private')
         return self.template()
 
     def current_userroles(self):
