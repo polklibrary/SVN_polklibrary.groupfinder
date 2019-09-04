@@ -180,6 +180,7 @@ var GroupFinder = {
                 'action': 'get',
                 'id': id,
                 'start': start.getTime(),
+                'nocache': 'nc' + (new Date().getTime())
             };
             $.get(apiurl, args, function(response){
                 for (var i in response.data) {
