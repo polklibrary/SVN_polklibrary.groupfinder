@@ -13,6 +13,8 @@ class RoomAPI(BrowserView):
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')
         self.request.response.setHeader('Access-Control-Allow-Origin', '*')
+        self.request.response.setHeader('Cache-Control', 'no-cache, no-store')
+        
         alsoProvides(self.request, IDisableCSRFProtection)
         action = self.request.form.get('action', '').lower()
         fmt = self.request.form.get('fmt', 'json')
