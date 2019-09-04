@@ -29,12 +29,12 @@ class IGroupFinder(model.Schema):
 
     client_id = schema.TextLine(
             title=u"Google Client ID (deprecated)",
-            required=True,
+            required=False,
         )
         
     api_key = schema.TextLine(
             title=u"Google API Key (deprecated)",
-            required=True,
+            required=False,
         )
 
     server_json_path = schema.TextLine(
