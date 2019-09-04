@@ -224,9 +224,6 @@ var GroupFinder = {
                 var confirmed = confirm("User: " + f2 + '\nIP:     ' + f1 + '\n\nRemove reservation?');
                 if (confirmed){
                     self.delete_event_handler(this,start,end);
-                    setTimeout(function(){
-                        location.reload();
-                    },250);
                 }
             }
         });
@@ -453,7 +450,6 @@ var GroupFinder = {
         $('#gf-confirmed-overlay input[type="button"]').click(function(){
             self.hide_confirm_overlay();
             self.submission_lock = false;
-            location.reload();
         });
     },
     
