@@ -49,7 +49,7 @@
                 <img src="++resource++polklibrary.groupfinder/helpinfo.jpg" alt="Help" />
             </div>
             
-            <div id="gf-locations" class="col-100 hide-1024">
+            <div id="gf-locations" class="col-100 hide-1024-force">
                 <tal:block repeat="location view/get_rooms">
                     <div class="col-20 ${location/extraCSS}" data-pos="${repeat/location/index}">
                         <div class="b">

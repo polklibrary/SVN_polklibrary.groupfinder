@@ -94,7 +94,7 @@ var GroupFinder = {
             });
             
             var a = $('<a>').attr('href',GFLocations[i].getURL).html(GFLocations[i].Title);
-            var info = $('<div>').addClass('b').addClass('show-1024').html(a);
+            var info = $('<div>').addClass('b').addClass('show-1024').addClass('gf-mobile-header').html(a);
             $(div_events).append(info);
             
             this.build_timeslots(div_events);

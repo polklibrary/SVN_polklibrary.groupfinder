@@ -1,3 +1,11 @@
+.gf-mobile-header{
+    padding: 10px;
+    background-color: #333;
+}
+.gf-mobile-header a{
+    color: white;
+}
+
 #groupfinder {
     margin-bottom: 50px;
 }
