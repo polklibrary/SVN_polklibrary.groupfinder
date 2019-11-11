@@ -51,6 +51,7 @@ class RoomAPI(BrowserView):
             return callback + '(' + json.dumps(status) + ')'
         return json.dumps(status)
 
+    # also exact in qr.py
     def add_event(self,room_id,email,title,start,end):
         brains = api.content.find(context=api.portal.get(), id=room_id, portal_type='polklibrary.groupfinder.models.room')
         if len(brains) == 1:
@@ -79,6 +80,7 @@ class RoomAPI(BrowserView):
             obj.reindexObject()
                     
                 
+
     def get_event(self,room_id,start):
         brains = api.content.find(context=api.portal.get(), id=room_id, portal_type='polklibrary.groupfinder.models.room')
         if len(brains) == 1:
@@ -94,7 +96,6 @@ class RoomAPI(BrowserView):
             if dtID in cache:
                 data = cache[dtID]
                 for d in data:
-                    print d
                     d['f1'] = base64.b64encode(d['ip'])
                     d['f2'] = base64.b64encode(d['email'])
                     del d['ip']

@@ -253,7 +253,31 @@ label[for="gf-title"].invalid-wording-message::after{
 }
 
 
+.qr-pass{
+    color: darkgreen;
+    font-size: 36px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.qr-warn{
+    color: darkred;
+    font-size: 36px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.qr-message{
+    color: #333;
+    font-size: 20px;
+}
+.qr-bold{
+    font-weight: bold;
+    text-decoration: underline;
+}
 
+.qr-rules{
+    color: #666;
+    font-style: italic;
+}
 
 
 

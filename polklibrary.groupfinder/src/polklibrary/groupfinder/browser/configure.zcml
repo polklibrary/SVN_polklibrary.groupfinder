@@ -18,6 +18,16 @@
       />
       
       
+    
+  <browser:page
+      for="polklibrary.groupfinder.models.groupfinder.IGroupFinder"
+      name="qr_reservations"
+      class=".qr.QRView"
+      permission="zope2.View"
+      />
+      
+      
+      
   <browser:page
       for="polklibrary.groupfinder.models.groupfinder.IGroupFinder"
       name="room_analytics"
