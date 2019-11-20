@@ -12,6 +12,10 @@ class QRView(BrowserView):
 
 
     template = ViewPageTemplateFile('qr.pt')
+    
+    # https://www.uwosh.edu/library/services/reserve-rooms/qr_reservations?minutes=60&id=2nd-floor-large-group-room
+    # https://www.uwosh.edu/library/services/reserve-rooms/qr_reservations?minutes=120&id=2nd-floor-large-group-room
+    # https://www.uwosh.edu/library/services/reserve-rooms/qr_reservations?minutes=180&id=2nd-floor-large-group-room
 
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')
@@ -53,13 +57,17 @@ class QRView(BrowserView):
         return currenttime
         
     def does_time_fit(self,room_id, start_dt, minutes):
+    
+        
+        end_dt = start_dt.replace(second=59, microsecond=59)
+    
         data = {
             'unavailable': False,
             'fits': True,
             'start': start_dt.strftime('%Y-%m-%d %H:%M:%S'),
             'start_friendly_time': start_dt.strftime("%-I:%M %p"),
             'end': None,
-            'end_friendly_time': start_dt.strftime("%-I:%M %p"),
+            'end_friendly_time': end_dt.strftime("%-I:%M %p"),
             'room_id': room_id,
         }
         previous_check_dt = start_dt
@@ -67,24 +75,35 @@ class QRView(BrowserView):
         brains = api.content.find(context=api.portal.get(), id=room_id, portal_type='polklibrary.groupfinder.models.room')
             
         if len(brains) == 1:
-        
             obj = brains[0].getObject()
             cache = obj.cached
             if cache == None:
                 cache = '{}'
             cache = json.loads(cache)
             
+            # Check if start is in middle of reservation
+            dtID = str(start_dt.strftime('%Y%m%d'))
+            if dtID in cache:
+                for e in cache[dtID]:
+                    if long(time.mktime(start_dt.timetuple())) * 1000 >= long(e['start']) and long(time.mktime(end_dt.timetuple())) * 1000 < long(e['end']):
+                        data['unavailable'] = True
+                        data['fits'] = False
+                        data['end'] = end_dt.strftime('%Y-%m-%d %H:%M:%S')
+                        data['end_friendly_time'] = end_dt.strftime("%-I:%M %p")
+                        return data
+
+            # Check if range up to reservation
             for i in range(0, minutes, 15):
                 previous_check_dt = check_dt
                 check_dt = check_dt + datetime.timedelta(minutes=15)
-                dtID = str(check_dt.strftime('%Y%m%d'))
+                
                 if dtID in cache:
-                    if len(filter(lambda x: x['start'] == int(time.mktime(check_dt.timetuple())) * 1000 or x['start'] == int(time.mktime(start_dt.timetuple())) * 1000, cache[dtID])) > 0:
-                        data['unavailable'] = i == 0
-                        data['fits'] = False
-                        data['end'] = check_dt.strftime('%Y-%m-%d %H:%M:%S')
-                        data['end_friendly_time'] = check_dt.strftime("%-I:%M %p")
-                        return data
+                    for e in cache[dtID]:                    
+                        if long(e['start']) == long(time.mktime(check_dt.timetuple())) * 1000:
+                            data['fits'] = False
+                            data['end'] = check_dt.strftime('%Y-%m-%d %H:%M:%S')
+                            data['end_friendly_time'] = check_dt.strftime("%-I:%M %p")
+                            return data
 
         data['end'] = check_dt.strftime('%Y-%m-%d %H:%M:%S')
         data['end_friendly_time'] = check_dt.strftime("%-I:%M %p")
