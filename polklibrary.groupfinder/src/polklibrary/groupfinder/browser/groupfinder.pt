@@ -32,6 +32,11 @@
         
         <div id="groupfinder" class="column">
         
+            <div class="col-100">
+                <tal:block replace="structure context/body/output|nothing" on-error="nothing" />
+            </div>
+            <div class="clear"></div>
+        
             <div class="col-20">
                 <div id="gf-pickadate-label">
                     View room reservations: 
