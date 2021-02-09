@@ -25,13 +25,13 @@ class RoomAPI(BrowserView):
         start = float(self.request.form.get('start', 0))
         end = float(self.request.form.get('end', 0))
         
-        # print 'RoomAPI ================================================'
-        # print 'Action: ' + action
-        # print 'RoomId: ' + room_id
-        # print 'Title: ' + title
-        # print 'Email: ' + email
-        # print 'Start: ' + str(start)
-        # print 'End: ' + str(end)
+        # print('RoomAPI ================================================')
+        # print('Action: ' + action)
+        # print('RoomId: ' + room_id)
+        # print('Title: ' + title)
+        # print('Email: ' + email)
+        # print('Start: ' + str(start))
+        # print('End: ' + str(end))
         
         status = {
             'code' : 403,
@@ -96,8 +96,8 @@ class RoomAPI(BrowserView):
             if dtID in cache:
                 data = cache[dtID]
                 for d in data:
-                    d['f1'] = base64.b64encode(d['ip'])
-                    d['f2'] = base64.b64encode(d['email'])
+                    d['f1'] = base64.b64encode(d['ip'].encode('ascii')).decode("ascii") 
+                    d['f2'] = base64.b64encode(d['email'].encode('ascii')).decode("ascii") 
                     del d['ip']
                     del d['email']
                 return data
