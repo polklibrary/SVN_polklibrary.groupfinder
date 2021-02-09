@@ -31,6 +31,8 @@ src/polklibrary/groupfinder/browser/groupfinder.pt
 src/polklibrary/groupfinder/browser/groupfinder.py
 src/polklibrary/groupfinder/browser/location.pt
 src/polklibrary/groupfinder/browser/location.py
+src/polklibrary/groupfinder/browser/qr.pt
+src/polklibrary/groupfinder/browser/qr.py
 src/polklibrary/groupfinder/browser/rooms.pt
 src/polklibrary/groupfinder/browser/rooms.py
 src/polklibrary/groupfinder/browser/overrides/.gitkeep
