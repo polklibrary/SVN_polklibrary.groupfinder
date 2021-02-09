@@ -50,12 +50,6 @@
       permission="zope2.View"
       />
     
-  <browser:page
-      for="polklibrary.groupfinder.models.location.ILocation"
-      name="location_view"
-      class=".location.Location"
-      permission="zope2.View"
-      />
     
   <browser:page
       for="polklibrary.groupfinder.models.room.IRoom"
