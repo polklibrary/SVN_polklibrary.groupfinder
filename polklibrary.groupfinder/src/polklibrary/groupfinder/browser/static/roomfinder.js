@@ -66,7 +66,7 @@ var GroupFinder = {
     },
     
     build : function(){
-        var v = parseInt($('#content-core input.pat-pickadate').val().replace(/-/g, ''));
+        var v = parseInt($('#gf-pickadate').val().replace(/-/g, ''));
         //if (v < 20190608){ //20190608
             this.build_loader();
             this.build_location_columns();
