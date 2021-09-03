@@ -47,7 +47,7 @@ var GroupFinder = {
         self.setup_addevent_handlers();
         self.validate_emails();
         self.validate_titles();
-        $(document).on('input propertychange change', '#content-core input.pattern-pickadate-date' , function(){
+        $(document).on('input propertychange change', '#gf-pickadate' , function(){
                 self.clear();
                 self.build();
         });
@@ -170,7 +170,7 @@ var GroupFinder = {
     
     build_event_list : function() {
         var self = this;
-        var date = $('#content input.pattern-pickadate-date').val();
+        var date = $('#gf-pickadate').val();
         var start = UTILITY.date(date,0,0,0);
         
         $('#gf-events > div.gf-time-column').each(function(i, element) {
@@ -252,7 +252,7 @@ var GroupFinder = {
     
     add_event_handler : function() {
         var self = this;
-        var date = $('#content input.pattern-pickadate-date').val();
+        var date = $('#gf-pickadate').val();
         var title = $('#gf-title').val();
         var email = $('#gf-email').val();
         var id = $('#gf-cal').val();
