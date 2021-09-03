@@ -47,7 +47,10 @@
                     var tmp_month = tmp_date.getMonth()+1;
                     if (tmp_month < 10)
                         tmp_month = '0' + tmp_month;
-                    document.getElementById('gf-pickadate').value = tmp_date.getFullYear() + '-' + tmp_month + '-' + tmp_date.getDate(); 
+                    var tmp_day = tmp_date.getDate();
+                    if (tmp_day < 10)
+                        tmp_day = '0' + tmp_day;
+                    document.getElementById('gf-pickadate').value = tmp_date.getFullYear() + '-' + tmp_month + '-' + tmp_day; 
                 </script>
             </div>
             <div class="col-80">
