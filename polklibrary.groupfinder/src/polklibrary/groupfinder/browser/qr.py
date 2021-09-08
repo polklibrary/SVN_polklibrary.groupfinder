@@ -85,7 +85,7 @@ class QRView(BrowserView):
             dtID = str(start_dt.strftime('%Y%m%d'))
             if dtID in cache:
                 for e in cache[dtID]:
-                    if long(time.mktime(start_dt.timetuple())) * 1000 >= long(e['start']) and long(time.mktime(end_dt.timetuple())) * 1000 < long(e['end']):
+                    if int(time.mktime(start_dt.timetuple())) * 1000 >= int(e['start']) and int(time.mktime(end_dt.timetuple())) * 1000 < int(e['end']):
                         data['unavailable'] = True
                         data['fits'] = False
                         data['end'] = end_dt.strftime('%Y-%m-%d %H:%M:%S')
@@ -99,7 +99,7 @@ class QRView(BrowserView):
                 
                 if dtID in cache:
                     for e in cache[dtID]:                    
-                        if long(e['start']) == long(time.mktime(check_dt.timetuple())) * 1000:
+                        if int(e['start']) == int(time.mktime(check_dt.timetuple())) * 1000:
                             data['fits'] = False
                             data['end'] = check_dt.strftime('%Y-%m-%d %H:%M:%S')
                             data['end_friendly_time'] = check_dt.strftime("%-I:%M %p")
