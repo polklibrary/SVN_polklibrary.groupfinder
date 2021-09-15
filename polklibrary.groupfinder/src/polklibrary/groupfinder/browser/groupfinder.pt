@@ -41,7 +41,8 @@
                 <div id="gf-pickadate-label">
                     View room reservations: 
                 </div>
-                <input id="gf-pickadate" class="pat-pickadate" value="" data-pat-pickadate="time:false"/>
+                <input id="gf-pickadate" type="date" name="gf.pickadate" />
+                <!--<input id="gf-pickadate" class="pat-pickadate" value="" data-pat-pickadate="time:false"/> -->
                 <script>
                     var tmp_date = new Date();
                     var tmp_month = tmp_date.getMonth()+1;
