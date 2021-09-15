@@ -47,7 +47,7 @@ var GroupFinder = {
         self.setup_addevent_handlers();
         self.validate_emails();
         self.validate_titles();
-        $(document).on('input propertychange change', '#gf-pickadate' , function(){
+        $(document).on('input propertychange change', '.pattern-pickadate-date' , function(){
                 self.clear();
                 self.build();
         });
@@ -66,7 +66,7 @@ var GroupFinder = {
     },
     
     build : function(){
-        var v = parseInt($('#gf-pickadate').val().replace(/-/g, ''));
+        var v = parseInt($('.pattern-pickadate-date').val().replace(/-/g, ''));
         //if (v < 20190608){ //20190608
             this.build_loader();
             this.build_location_columns();
@@ -170,7 +170,7 @@ var GroupFinder = {
     
     build_event_list : function() {
         var self = this;
-        var date = $('#gf-pickadate').val();
+        var date = $('.pattern-pickadate-date').val();
         var start = UTILITY.date(date,0,0,0);
         
         $('#gf-events > div.gf-time-column').each(function(i, element) {
@@ -252,7 +252,7 @@ var GroupFinder = {
     
     add_event_handler : function() {
         var self = this;
-        var date = $('#gf-pickadate').val();
+        var date = $('.pattern-pickadate-date').val();
         var title = $('#gf-title').val();
         var email = $('#gf-email').val();
         var id = $('#gf-cal').val();
